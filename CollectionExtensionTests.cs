@@ -103,9 +103,9 @@
                 v =>
                 {
                     bool allowed;
-                    if (!bool.TryParse(v.ToString(), out allowed))
+                    if (!bool.TryParse(v, out allowed))
                     {
-                        allowed = v.ToString().Equals("on", StringComparison.Ordinal);
+                        allowed = v.Equals("on", StringComparison.Ordinal);
                     }
 
                     return allowed;
@@ -143,7 +143,7 @@
         {
             var collection = new Hashtable { { "length", "1:10:10" } };
 
-            var value = collection.Get("length", v => TimeSpan.Parse(v.ToString()));
+            var value = collection.Get("length", TimeSpan.Parse);
 
             Expect(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
         }

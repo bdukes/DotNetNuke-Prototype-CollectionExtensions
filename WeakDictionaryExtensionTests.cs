@@ -10,7 +10,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class CollectionExtensionTests : AssertionHelper
+    public class WeakDictionaryExtensionTests : AssertionHelper
     {
         [Test]
         public void get_null_string_from_hashtable_for_missing_value()
