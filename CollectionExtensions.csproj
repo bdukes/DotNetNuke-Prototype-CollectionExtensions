@@ -53,6 +53,8 @@
   <ItemGroup>
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="CollectionExtensionTests.cs" />
+    <Compile Include="WeakDictionaryExtensionTests.cs" />
+    <Compile Include="WeakDictionaryExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
