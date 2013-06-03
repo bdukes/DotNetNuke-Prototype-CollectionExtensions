@@ -297,9 +297,20 @@
                 return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
             }
 
-            if (typeof(T).IsValueType && value == null)
+            if (value == null)
             {
-                throw new InvalidCastException();
+                if (typeof(T).IsValueType)
+                {
+                    // TODO: this should probably return the default value if called from GetOrDefault...
+                    throw new InvalidCastException();
+                }
+
+                return (T)value; // null
+            }
+
+            if (typeof(T) == typeof(string))
+            {
+                return (T)(object)value.ToString();
             }
 
             return (T)value;
