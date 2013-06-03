@@ -190,6 +190,20 @@
         }
 
         [Test]
+        public void get_from_xmlnode()
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(@"
+<parent>
+    <id>13</id>
+</parent>");
+
+            var value = doc.DocumentElement.Get<int>("id");
+
+            Expect(value, Is.EqualTo(13));
+        }
+
+        [Test]
         public void can_get_timespan_with_custom_converter()
         {
             var collection = new Hashtable { { "length", "1:10:10" } };
