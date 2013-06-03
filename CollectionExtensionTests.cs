@@ -178,6 +178,18 @@
         }
 
         [Test]
+        public void get_from_xnode()
+        {
+            var node = new XElement(
+                "parent",
+                new XElement("id", 14));
+            
+            var value = node.Get<int>("id");
+
+            Expect(value, Is.EqualTo(14));
+        }
+
+        [Test]
         public void can_get_timespan_with_custom_converter()
         {
             var collection = new Hashtable { { "length", "1:10:10" } };
