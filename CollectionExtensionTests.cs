@@ -222,11 +222,45 @@
         }
 
         [Test]
+        public void throws_argumentnullexception_when_xelement_is_null()
+        {
+            XElement node = null;
+
+            Expect(() => node.Get<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+        }
+
+        [Test]
+        public void throws_argumentnullexception_when_xmlnode_is_null()
+        {
+            XmlNode node = null;
+
+            Expect(() => node.Get<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+        }
+
+        [Test]
         public void throws_invalidcastexception_when_type_is_not_supported()
         {
             var dictionary = new Dictionary<string, string> { { "length", "1:10:10" } };
 
             Expect(() => dictionary.Get<TimeSpan>("length"), Throws.TypeOf<InvalidCastException>());
+        }
+
+        [Test]
+        public void throws_invalidcastexception_when_value_is_null_for_value_type()
+        {
+            var dictionary = new Dictionary<string, string> { { "length", null } };
+
+            Expect(() => dictionary.Get<int>("length"), Throws.TypeOf<InvalidCastException>());
+        }
+
+        [Test]
+        public void does_not_throw_invalidcastexception_when_value_is_null_for_reference_type()
+        {
+            var dictionary = new Dictionary<string, string> { { "length", null } };
+
+            var value = dictionary.Get<ApplicationException>("length");
+
+            Expect(value, Is.Null);
         }
 
         [Test]

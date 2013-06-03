@@ -18,11 +18,9 @@
         /// <param name="key">The key by which to get the value.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="InvalidCastException">
-        /// This conversion is not supported. 
-        /// -or- 
-        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type.
-        /// -or-
-        /// the value does not implement the <see cref="IConvertible"/> interface.
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
         public static T Get<T>(this IDictionary dictionary, string key)
@@ -36,11 +34,9 @@
         /// <param name="key">The name of the element from which to get the value.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="InvalidCastException">
-        /// This conversion is not supported. 
-        /// -or- 
-        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type.
-        /// -or-
-        /// the value does not implement the <see cref="IConvertible"/> interface.
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XContainer node, string key)
@@ -54,11 +50,9 @@
         /// <param name="key">The name of the element from which to get the value.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="InvalidCastException">
-        /// This conversion is not supported. 
-        /// -or- 
-        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type.
-        /// -or-
-        /// the value does not implement the <see cref="IConvertible"/> interface.
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XmlNode node, string key)
@@ -73,11 +67,9 @@
         /// <param name="defaultValue">The default value to return if the dictionary doesn't have a value for the given <paramref name="key"/>.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="InvalidCastException">
-        /// This conversion is not supported. 
-        /// -or- 
-        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type.
-        /// -or-
-        /// the value does not implement the <see cref="IConvertible"/> interface.
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
         public static T Get<T>(this IDictionary dictionary, string key, T defaultValue)
@@ -92,11 +84,9 @@
         /// <param name="defaultValue">The default value to return if the dictionary doesn't have a value for the given <paramref name="key"/>.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="InvalidCastException">
-        /// This conversion is not supported. 
-        /// -or- 
-        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type.
-        /// -or-
-        /// the value does not implement the <see cref="IConvertible"/> interface.
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XContainer node, string key, T defaultValue)
@@ -111,11 +101,9 @@
         /// <param name="defaultValue">The default value to return if the dictionary doesn't have a value for the given <paramref name="key"/>.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="InvalidCastException">
-        /// This conversion is not supported. 
-        /// -or- 
-        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type.
-        /// -or-
-        /// the value does not implement the <see cref="IConvertible"/> interface.
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XmlNode node, string key, T defaultValue)
@@ -297,9 +285,24 @@
         /// <typeparam name="T">The type of the value to return</typeparam>
         /// <param name="value">The value to convert.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="InvalidCastException">
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
+        /// </exception>
         private static T ConvertValue<T>(object value)
         {
-            return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+            if (value is IConvertible)
+            {
+                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+            }
+
+            if (typeof(T).IsValueType && value == null)
+            {
+                throw new InvalidCastException();
+            }
+
+            return (T)value;
         }
 
         /// <summary>Converts the <paramref name="value" /> into a <typeparamref name="T" /> instance.</summary>
