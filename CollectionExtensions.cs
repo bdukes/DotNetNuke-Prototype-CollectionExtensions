@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -103,7 +104,7 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         private static T ConvertValue<T>(object value)
         {
-            return (T)Convert.ChangeType(value, typeof(T));
+            return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
         }
 
         /// <summary>Converts the <paramref name="value" /> into a <typeparamref name="T" /> instance.</summary>
@@ -113,7 +114,8 @@
         /// <returns>A <typeparamref name="T" /> instance.</returns>
         private static T ConvertValue<T>(object value, Func<string, T> converter)
         {
-            return converter(value == null ? null : value.ToString());
+            var formattable = value as IFormattable;
+            return converter(value == null ? null : formattable == null ? value.ToString() : formattable.ToString(null, CultureInfo.InvariantCulture));
         }
     }
 }

@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.UI;
+    using System.Xml;
     using System.Xml.Linq;
 
     using NUnit.Framework;
@@ -115,9 +116,9 @@
         }
 
         [Test]
-        public void get_int_from_statebag()
+        public void get_int()
         {
-            var collection = new StateBag { { "appId", "123" } };
+            var collection = new Dictionary<string, string> { { "appId", "123" } };
 
             var value = collection.Get<int>("appId");
 
@@ -125,17 +126,55 @@
         }
 
         [Test]
-        public void get_datetime_from_xmlnode()
+        public void get_decimal()
         {
-            var sampleDateTime = new DateTime(2013, 5, 30, 5, 6, 7);
-            var node = new XElement(
-                "parent",
-                new XElement("startDate", sampleDateTime));
-            var nodeDictionary = node.Descendants().ToDictionary(element => element.Name.ToString(), element => element.Value);
+            var collection = new Dictionary<string, string> { { "appId", "1.23" } };
 
-            var value = nodeDictionary.Get<DateTime>("startDate");
+            var value = collection.Get<decimal>("appId");
 
-            Expect(value, Is.EqualTo(sampleDateTime));
+            Expect(value, Is.EqualTo(1.23m));
+        }
+
+        [Test]
+        [SetCulture("nl-NL")]
+        public void get_decimal_from_other_culture()
+        {
+            var collection = new Dictionary<string, string> { { "appId", "1.23" } };
+
+            var value = collection.Get<decimal>("appId");
+
+            Expect(value, Is.EqualTo(1.23m));
+        }
+
+        [Test]
+        public void get_datetime()
+        {
+            var collection = new Dictionary<string, string> { { "startDate", "05/04/2012 00:00:00" } };
+
+            var value = collection.Get<DateTime>("startDate");
+
+            Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+        }
+
+        [Test]
+        [SetCulture("nl-NL")]
+        public void get_datetime_from_other_culture()
+        {
+            var collection = new Dictionary<string, string> { { "startDate", "05/04/2012 00:00:00" } };
+
+            var value = collection.Get<DateTime>("startDate");
+
+            Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+        }
+
+        [Test]
+        public void get_from_statebag()
+        {
+            var collection = new StateBag { { "appId", "123" } };
+
+            var value = collection.Get<string>("appId");
+
+            Expect(value, Is.EqualTo("123"));
         }
 
         [Test]
