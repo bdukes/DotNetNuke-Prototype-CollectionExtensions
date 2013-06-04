@@ -255,10 +255,11 @@
         /// <param name="defaultValue">The default value to return if the dictionary doesn't have a value for the given <paramref name="key"/>.</param>
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> or <paramref name="converter"/> is <c>null</c></exception>
         public static T Get<T>(this IDictionary dictionary, string key, T defaultValue, Func<object, T> converter)
         {
             Requires.NotNull("dictionary", dictionary);
+            Requires.NotNull("converter", converter);
 
             return dictionary.Contains(key) ? converter(dictionary[key]) : defaultValue;
         }
