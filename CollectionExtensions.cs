@@ -5,8 +5,8 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Xml;
     using System.Xml.Linq;
+    using System.Xml.XPath;
 
     using DotNetNuke.Common;
 
@@ -55,7 +55,7 @@
         /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XmlNode node, string key)
+        public static T Get<T>(this IXPathNavigable node, string key)
         {
             return node.ToDictionary().Get(key, default(T));
         }
@@ -106,7 +106,7 @@
         /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XmlNode node, string key, T defaultValue)
+        public static T Get<T>(this IXPathNavigable node, string key, T defaultValue)
         {
             return node.ToDictionary().Get(key, defaultValue, ConvertValue<T>);
         }
@@ -142,7 +142,7 @@
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XmlNode node, string key, Func<object, T> converter)
+        public static T Get<T>(this IXPathNavigable node, string key, Func<object, T> converter)
         {
             return node.ToDictionary().Get(key, default(T), converter);
         }
@@ -178,7 +178,7 @@
         /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XmlNode node, string key, Func<string, T> converter)
+        public static T Get<T>(this IXPathNavigable node, string key, Func<string, T> converter)
         {
             return node.ToDictionary().Get(key, default(T), (object value) => ConvertValue(value, converter));
         }
@@ -217,7 +217,7 @@
         /// <param name="converter">A function to convert the value as a <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XmlNode node, string key, T defaultValue, Func<string, T> converter)
+        public static T Get<T>(this IXPathNavigable node, string key, T defaultValue, Func<string, T> converter)
         {
             return node.ToDictionary().Get(key, defaultValue, (object value) => ConvertValue(value, converter));
         }
@@ -243,7 +243,7 @@
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XmlNode node, string key, T defaultValue, Func<object, T> converter)
+        public static T Get<T>(this IXPathNavigable node, string key, T defaultValue, Func<object, T> converter)
         {
             return node.ToDictionary().Get(key, defaultValue, converter);
         }
@@ -266,6 +266,7 @@
         /// <summary>Converts the <paramref name="node"/> to a <see cref="Dictionary{TKey,TValue}"/>.</summary>
         /// <param name="node">The node.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         private static Dictionary<string, string> ToDictionary(this XContainer node)
         {
             Requires.NotNull("node", node);
@@ -275,10 +276,11 @@
         /// <summary>Converts the <paramref name="node"/> to a <see cref="Dictionary{TKey,TValue}"/>.</summary>
         /// <param name="node">The node.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> instance.</returns>
-        private static Dictionary<string, string> ToDictionary(this XmlNode node)
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
+        private static Dictionary<string, string> ToDictionary(this IXPathNavigable node)
         {
             Requires.NotNull("node", node);
-            return node.ChildNodes.Cast<XmlNode>().ToDictionary(n => n.Name, n => n.InnerText);
+            return node.CreateNavigator().SelectChildren(XPathNodeType.Element).Cast<XPathNavigator>().ToDictionary(n => n.Name, n => n.Value);
         }
 
         /// <summary>Converts the <paramref name="value"/> into a <typeparamref name="T"/> instance.</summary>
