@@ -41,7 +41,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XContainer node, string key)
         {
-            return node.ToDictionary().Get(key, default(T));
+            return node.ToDictionary().Get<T>(key);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -57,7 +57,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this IXPathNavigable node, string key)
         {
-            return node.ToDictionary().Get(key, default(T));
+            return node.ToDictionary().Get<T>(key);
         }
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -91,7 +91,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XContainer node, string key, T defaultValue)
         {
-            return node.ToDictionary().Get(key, defaultValue, ConvertValue<T>);
+            return node.ToDictionary().Get(key, defaultValue);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -108,7 +108,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this IXPathNavigable node, string key, T defaultValue)
         {
-            return node.ToDictionary().Get(key, defaultValue, ConvertValue<T>);
+            return node.ToDictionary().Get(key, defaultValue);
         }
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -132,7 +132,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XContainer node, string key, Func<object, T> converter)
         {
-            return node.ToDictionary().Get(key, default(T), converter);
+            return node.ToDictionary().Get(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -144,7 +144,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this IXPathNavigable node, string key, Func<object, T> converter)
         {
-            return node.ToDictionary().Get(key, default(T), converter);
+            return node.ToDictionary().Get(key, converter);
         }
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -168,7 +168,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XContainer node, string key, Func<string, T> converter)
         {
-            return node.ToDictionary().Get(key, default(T), (object value) => ConvertValue(value, converter));
+            return node.ToDictionary().Get(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -180,7 +180,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this IXPathNavigable node, string key, Func<string, T> converter)
         {
-            return node.ToDictionary().Get(key, default(T), (object value) => ConvertValue(value, converter));
+            return node.ToDictionary().Get(key, converter);
         }
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -206,7 +206,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this XContainer node, string key, T defaultValue, Func<string, T> converter)
         {
-            return node.ToDictionary().Get(key, defaultValue, (object value) => ConvertValue(value, converter));
+            return node.ToDictionary().Get(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -219,7 +219,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
         public static T Get<T>(this IXPathNavigable node, string key, T defaultValue, Func<string, T> converter)
         {
-            return node.ToDictionary().Get(key, defaultValue, (object value) => ConvertValue(value, converter));
+            return node.ToDictionary().Get(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
