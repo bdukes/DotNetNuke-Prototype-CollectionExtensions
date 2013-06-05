@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Linq;
     using System.Web.UI;
     using System.Xml;
@@ -211,6 +212,14 @@
             var value = collection.Get("length", TimeSpan.Parse);
 
             Expect(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
+        }
+
+        [Test]
+        public void throws_invalidoperationexception_when_lookup_has_multiple_values()
+        {
+            var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
+
+            Expect(() => collection.Get<string>("state"), Throws.InvalidOperationException);
         }
 
         [Test]
