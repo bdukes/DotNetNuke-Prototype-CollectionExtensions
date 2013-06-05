@@ -13,6 +13,30 @@
 
     public static class CollectionExtensions
     {
+        /// <summary>
+        /// Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.
+        /// Considers the value <c>true</c> if it is one of the following (case-insensitive):
+        /// <list type="bullet">
+        /// <item><term>true</term></item>
+        /// <item><term>on</term></item>
+        /// <item><term>1</term></item>
+        /// <item><term>yes</term></item>
+        /// </list>
+        /// </summary>
+        /// <returns>A <see cref="Func{String,Boolean}" /> instance.</returns>
+        public static Func<string, bool> GetFlexibleBooleanParsingFunction()
+        {
+            return GetFlexibleBooleanParsingFunction(new[] { "true", "on", "1", "yes" });
+        }
+
+        /// <summary>Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.</summary>
+        /// <param name="trueValues">The <see cref="string"/> values (case-insensitive) which should be parsed as <c>true</c>.</param>
+        /// <returns>A <see cref="Func{String,Boolean}" /> instance.</returns>
+        public static Func<string, bool> GetFlexibleBooleanParsingFunction(params string[] trueValues)
+        {
+            return value => trueValues.Contains(value, StringComparer.OrdinalIgnoreCase);
+        }
+
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
         /// <param name="dictionary">The dictionary.</param>
@@ -244,7 +268,7 @@
             return node.ToDictionary().Get(key, converter);
         }
 
-        /// <summary>Gets the value from the dictionary, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
+        /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="key">The key by which to get the value.</param>
@@ -306,7 +330,7 @@
             return node.ToDictionary().Get(key, converter);
         }
 
-        /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
+        /// <summary>Gets the value from the dictionary, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="key">The key by which to get the value.</param>

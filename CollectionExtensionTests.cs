@@ -215,6 +215,36 @@
         }
 
         [Test]
+        public void can_get_empty_boolean_from_form()
+        {
+            var collection = new NameValueCollection { { "text", "blah" } };
+
+            var value = collection.Get("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
+
+            Expect(value, Is.False);
+        }
+
+        [Test]
+        public void can_get_boolean_from_form()
+        {
+            var collection = new NameValueCollection { { "radio", "on" } };
+
+            var value = collection.Get("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
+
+            Expect(value, Is.True);
+        }
+
+        [Test]
+        public void flexible_boolean_parsing_is_case_insensitive()
+        {
+            var collection = new NameValueCollection { { "question", "YES" } };
+
+            var value = collection.Get("question", CollectionExtensions.GetFlexibleBooleanParsingFunction("yes"));
+
+            Expect(value, Is.True);
+        }
+
+        [Test]
         public void throws_invalidoperationexception_when_lookup_has_multiple_values()
         {
             var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
