@@ -53,7 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="CollectionUtilities.cs" />
     <Compile Include="CollectionExtensionTests.cs" />
     <Compile Include="WeakDictionaryExtensionTests.cs" />
     <Compile Include="WeakDictionaryExtensions.cs" />

@@ -1,4 +1,4 @@
-﻿namespace DotNetNuke.Prototype.CollectionExtensions
+﻿namespace DotNetNuke.Common.Utilities
 {
     using System;
     using System.Collections;
@@ -11,7 +11,7 @@
 
     using DotNetNuke.Common;
 
-    public static class CollectionExtensions
+    public static class CollectionUtilities
     {
         /// <summary>
         /// Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.

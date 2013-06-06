@@ -1,4 +1,4 @@
-﻿namespace DotNetNuke.Prototype.CollectionExtensions
+﻿namespace DotNetNuke.Common.Utilities
 {
     using System;
     using System.Collections;
@@ -219,7 +219,7 @@
         {
             var collection = new NameValueCollection { { "text", "blah" } };
 
-            var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
+            var value = collection.GetValueOrDefault("radio", CollectionUtilities.GetFlexibleBooleanParsingFunction());
 
             Expect(value, Is.False);
         }
@@ -229,7 +229,7 @@
         {
             var collection = new NameValueCollection { { "radio", "on" } };
 
-            var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
+            var value = collection.GetValueOrDefault("radio", CollectionUtilities.GetFlexibleBooleanParsingFunction());
 
             Expect(value, Is.True);
         }
@@ -239,7 +239,7 @@
         {
             var collection = new NameValueCollection { { "question", "YES" } };
 
-            var value = collection.GetValueOrDefault("question", CollectionExtensions.GetFlexibleBooleanParsingFunction("yes"));
+            var value = collection.GetValueOrDefault("question", CollectionUtilities.GetFlexibleBooleanParsingFunction("yes"));
 
             Expect(value, Is.True);
         }
