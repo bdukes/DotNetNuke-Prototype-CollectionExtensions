@@ -541,6 +541,11 @@
         /// </exception>
         private static T ConvertValue<T>(object value)
         {
+            if (value is T)
+            {
+                return (T)value;
+            }
+
             if (value is IConvertible)
             {
                 return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
