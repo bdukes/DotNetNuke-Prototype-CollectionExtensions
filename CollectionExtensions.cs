@@ -467,6 +467,18 @@
             return dictionary.Contains(key) ? converter(dictionary[key]) : defaultValue;
         }
 
+        /// <summary>Converts the <paramref name="collection"/> to an <see cref="ILookup{TKey,TElement}"/>.</summary>
+        /// <param name="collection">The collection.</param>
+        /// <returns>An <see cref="ILookup{TKey,TElement}"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
+        public static ILookup<string, string> ToLookup(this NameValueCollection collection)
+        {
+            Requires.NotNull("collection", collection);
+            return collection.AllKeys
+                             .SelectMany(key => ParseValues(key, collection.GetValues(key)))
+                             .ToLookup(pair => pair.Key, pair => pair.Value);
+        }
+
         /// <summary>Converts the <paramref name="node"/> to a <see cref="Dictionary{TKey,TValue}"/>.</summary>
         /// <param name="node">The node.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> instance.</returns>
@@ -505,18 +517,6 @@
                 // TODO: Localize this
                 throw new InvalidOperationException("There were multiple values for the given key", exc);
             }
-        }
-
-        /// <summary>Converts the <paramref name="collection"/> to an <see cref="ILookup{TKey,TElement}"/>.</summary>
-        /// <param name="collection">The collection.</param>
-        /// <returns>An <see cref="ILookup{TKey,TElement}"/> instance.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
-        private static ILookup<string, string> ToLookup(this NameValueCollection collection)
-        {
-            Requires.NotNull("collection", collection);
-            return collection.AllKeys
-                             .SelectMany(key => ParseValues(key, collection.GetValues(key)))
-                             .ToLookup(pair => pair.Key, pair => pair.Value);
         }
 
         /// <summary>Wraps the <paramref name="values"/> into <see cref="KeyValuePair{TKey,TValue}"/> instances.</summary>

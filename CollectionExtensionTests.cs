@@ -245,6 +245,26 @@
         }
 
         [Test]
+        public void can_convert_namevaluecollection_to_lookup()
+        {
+            var collection = new NameValueCollection { { "question", "YES" } };
+
+            var lookup = collection.ToLookup();
+
+            Expect(lookup["question"], Is.EquivalentTo(new[] { "YES" }));
+        }
+
+        [Test]
+        public void can_convert_namevaluecollection_with_multiple_values_to_lookup()
+        {
+            var collection = new NameValueCollection { { "question", "A" }, { "question", "B" }, { "question", "C" }, };
+
+            var lookup = collection.ToLookup();
+
+            Expect(lookup["question"], Is.EquivalentTo(new[] { "A", "B", "C", }));
+        }
+
+        [Test]
         public void throws_invalidoperationexception_when_lookup_has_multiple_values()
         {
             var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
@@ -308,6 +328,14 @@
             var dictionary = new Dictionary<string, string> { { "ID", "abc123" } };
 
             Expect(() => dictionary.Get<int>("ID"), Throws.TypeOf<FormatException>());
+        }
+
+        [Test]
+        public void tolookup_throws_argumentnullexception_when_namevaluecollection_is_null()
+        {
+            NameValueCollection col = null;
+
+            Expect(() => col.ToLookup(), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("collection"));
         }
     }
 }
