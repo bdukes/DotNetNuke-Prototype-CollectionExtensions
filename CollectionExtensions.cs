@@ -37,6 +37,93 @@
             return value => trueValues.Contains(value, StringComparer.OrdinalIgnoreCase);
         }
 
+        /// <summary>Gets the value from the dictionary.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="InvalidCastException">
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
+        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="dictionary"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this IDictionary dictionary, string key)
+        {
+            return dictionary.GetValue(key, ConvertValue<T>);
+        }
+
+        /// <summary>Gets the value from the lookup.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="lookup">The lookup.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="InvalidCastException">
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
+        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
+        /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
+        /// <exception cref="ArgumentException"><paramref name="lookup"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this ILookup<string, string> lookup, string key)
+        {
+            return lookup.ToDictionary(key).GetValue<T>(key);
+        }
+
+        /// <summary>Gets the value from the collection.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="InvalidCastException">
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
+        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
+        /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this NameValueCollection collection, string key)
+        {
+            return collection.ToLookup().GetValue<T>(key);
+        }
+
+        /// <summary>Gets the value from the XML node's child elements.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="node">An XML node which containers other elements.</param>
+        /// <param name="key">The name of the element from which to get the value.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="InvalidCastException">
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
+        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="node"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this XContainer node, string key)
+        {
+            return node.ToDictionary().GetValue<T>(key);
+        }
+
+        /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="node">An XML node which containers other elements.</param>
+        /// <param name="key">The name of the element from which to get the value.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="InvalidCastException">
+        /// the value is <c>null</c> and <typeparamref name="T"/> is a value type, or
+        /// the value does not implement the <see cref="IConvertible"/> interface and
+        /// no cast is defined from the value to <typeparamref name="T"/>
+        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="node"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this IXPathNavigable node, string key)
+        {
+            return node.ToDictionary().GetValue<T>(key);
+        }
+
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
         /// <param name="dictionary">The dictionary.</param>
@@ -204,6 +291,127 @@
         public static T GetValueOrDefault<T>(this IXPathNavigable node, string key, T defaultValue)
         {
             return node.ToDictionary().GetValueOrDefault(key, defaultValue);
+        }
+
+        /// <summary>Gets the value from the lookup.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="lookup">The lookup.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
+        /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
+        /// <exception cref="ArgumentException"><paramref name="lookup"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this ILookup<string, string> lookup, string key, Func<object, T> converter)
+        {
+            return lookup.ToDictionary(key).GetValue(key, converter);
+        }
+
+        /// <summary>Gets the value from the collection.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
+        /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this NameValueCollection collection, string key, Func<object, T> converter)
+        {
+            return collection.ToLookup().GetValue(key, converter);
+        }
+
+        /// <summary>Gets the value from the XML node's child elements.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="node">An XML node which containers other elements.</param>
+        /// <param name="key">The name of the element from which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="node"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this XContainer node, string key, Func<object, T> converter)
+        {
+            return node.ToDictionary().GetValue(key, converter);
+        }
+
+        /// <summary>Gets the value from the XML node's child elements.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="node">An XML node which containers other elements.</param>
+        /// <param name="key">The name of the element from which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="node"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this IXPathNavigable node, string key, Func<object, T> converter)
+        {
+            return node.ToDictionary().GetValue(key, converter);
+        }
+
+        /// <summary>Gets the value from the dictionary.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="dictionary"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this IDictionary dictionary, string key, Func<string, T> converter)
+        {
+            return dictionary.GetValue(key, (object value) => ConvertValue(value, converter));
+        }
+
+        /// <summary>Gets the value from the lookup.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="lookup">The lookup.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
+        /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
+        /// <exception cref="ArgumentException"><paramref name="lookup"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this ILookup<string, string> lookup, string key, Func<string, T> converter)
+        {
+            return lookup.ToDictionary(key).GetValue(key, converter);
+        }
+
+        /// <summary>Gets the value from the collection.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
+        /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
+        /// <exception cref="ArgumentException"><paramref name="collection"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this NameValueCollection collection, string key, Func<string, T> converter)
+        {
+            return collection.ToLookup().GetValue(key, converter);
+        }
+
+        /// <summary>Gets the value from the XML node's child elements.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="node">An XML node which containers other elements.</param>
+        /// <param name="key">The name of the element from which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="node"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this XContainer node, string key, Func<string, T> converter)
+        {
+            return node.ToDictionary().GetValue(key, converter);
+        }
+
+        /// <summary>Gets the value from the XML node's child elements.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="node">An XML node which containers other elements.</param>
+        /// <param name="key">The name of the element from which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="node"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this IXPathNavigable node, string key, Func<string, T> converter)
+        {
+            return node.ToDictionary().GetValue(key, converter);
         }
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -449,6 +657,27 @@
         public static T GetValueOrDefault<T>(this IXPathNavigable node, string key, T defaultValue, Func<object, T> converter)
         {
             return node.ToDictionary().GetValueOrDefault(key, defaultValue, converter);
+        }
+
+        /// <summary>Gets the value from the dictionary.</summary>
+        /// <typeparam name="T">The type of the value to retrieve</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">The key by which to get the value.</param>
+        /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A <typeparamref name="T"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> or <paramref name="converter"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="dictionary"/> does not contain a value for <paramref name="key"/></exception>
+        public static T GetValue<T>(this IDictionary dictionary, string key, Func<object, T> converter)
+        {
+            Requires.NotNull("dictionary", dictionary);
+            Requires.NotNull("converter", converter);
+
+            if (!dictionary.Contains(key))
+            {
+                throw new ArgumentException("dictionary does not contain a value for the given key", "key");
+            }
+            
+            return converter(dictionary[key]);
         }
 
         /// <summary>Gets the value from the dictionary, returning the <paramref key="defaultValue"/> if the value doesn't exist.</summary>

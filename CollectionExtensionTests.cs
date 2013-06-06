@@ -285,6 +285,80 @@
         }
 
         [Test]
+        public void can_get_value_without_default()
+        {
+            var dictionary = new Hashtable { { "question", "what is it" } };
+
+            var value = dictionary.GetValue<string>("question");
+
+            Expect(value, Is.EqualTo("what is it"));
+        }
+
+        [Test]
+        public void can_get_value_without_default_with_custom_converter()
+        {
+            var dictionary = new Hashtable { { "question", "what is it" } };
+
+            var value = dictionary.GetValue("question", (object v) => v is string ? 10 : 20);
+
+            Expect(value, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void can_get_value_without_default_from_namevaluecollection()
+        {
+            var collection = new NameValueCollection { { "question", "what is it" } };
+
+            var value = collection.GetValue<string>("question");
+
+            Expect(value, Is.EqualTo("what is it"));
+        }
+
+        [Test]
+        public void can_get_value_without_default_from_statebag()
+        {
+            var dictionary = new StateBag { { "question", "what is it" } };
+
+            var value = dictionary.GetValue<string>("question");
+
+            Expect(value, Is.EqualTo("what is it"));
+        }
+
+        [Test]
+        public void can_get_value_without_default_from_xnode()
+        {
+            var node = new XElement(
+                "parent",
+                new XElement("id", 21));
+
+            var value = node.GetValue<int>("id");
+
+            Expect(value, Is.EqualTo(21));
+        }
+
+        [Test]
+        public void can_get_value_without_default_from_xmlnode()
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(@"
+<parent>
+    <id>123</id>
+</parent>");
+
+            var value = doc.DocumentElement.GetValue<int>("id");
+
+            Expect(value, Is.EqualTo(123));
+        }
+
+        [Test]
+        public void getvalue_throws_argumentexception_when_value_is_not_present()
+        {
+            var dictionary = new Hashtable { { "question", "what is it" } };
+
+            Expect(() => dictionary.GetValue<string>("answer"), Throws.ArgumentException.With.Property("ParamName").EqualTo("key"));
+        }
+
+        [Test]
         public void throws_invalidoperationexception_when_lookup_has_multiple_values()
         {
             var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
