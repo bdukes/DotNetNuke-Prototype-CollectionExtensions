@@ -265,6 +265,26 @@
         }
 
         [Test]
+        public void can_get_null_value_rather_than_default()
+        {
+            var dictionary = new Hashtable { { "question", null } };
+
+            var value = dictionary.GetValueOrDefault("question", "yes");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
+        public void can_get_empty_string_rather_than_default()
+        {
+            var dictionary = new Hashtable { { "question", string.Empty } };
+
+            var value = dictionary.GetValueOrDefault("question", "yes");
+
+            Expect(value, Is.Empty);
+        }
+
+        [Test]
         public void throws_invalidoperationexception_when_lookup_has_multiple_values()
         {
             var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
