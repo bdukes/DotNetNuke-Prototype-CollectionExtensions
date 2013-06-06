@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI;
     using System.Xml;
@@ -312,6 +313,46 @@
             var value = collection.GetValue<string>("question");
 
             Expect(value, Is.EqualTo("what is it"));
+        }
+
+        [Test]
+        public void can_get_multiple_values_from_namevaluecollection()
+        {
+            var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" }, };
+
+            var value = collection.GetValues<string>("state");
+
+            Expect(value, Is.EquivalentTo(new[] { "CA", "BC", }));
+        }
+
+        [Test]
+        public void can_get_sequence_with_single_value_from_namevaluecollection()
+        {
+            var collection = new NameValueCollection { { "state", "CA" } };
+
+            var value = collection.GetValues<string>("state");
+
+            Expect(value, Is.EquivalentTo(new[] { "CA" }));
+        }
+
+        [Test]
+        public void can_get_sequence_with_no_value_from_namevaluecollection()
+        {
+            var collection = new NameValueCollection { { "state", "CA" } };
+
+            var value = collection.GetValues<string>("cat");
+
+            Expect(value, Is.Empty);
+        }
+
+        [Test]
+        public void can_get_multiple_values_from_namevaluecollection_with_custom_converter()
+        {
+            var collection = new NameValueCollection { { "state", "12" }, { "state", "1" } };
+
+            var value = collection.GetValues("state", v => int.Parse(v, CultureInfo.InvariantCulture) + 10);
+
+            Expect(value, Is.EquivalentTo(new[] { 22, 11 }));
         }
 
         [Test]

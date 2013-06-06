@@ -124,6 +124,28 @@
             return node.ToDictionary().GetValue<T>(key);
         }
 
+        /// <summary>Gets the values from the lookup.</summary>
+        /// <typeparam name="T">The type of the values to retrieve</typeparam>
+        /// <param name="lookup">The lookup.</param>
+        /// <param name="key">The key by which to get the values.</param>
+        /// <returns>A sequence of <typeparamref name="T"/> instances.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
+        public static IEnumerable<T> GetValues<T>(this ILookup<string, string> lookup, string key)
+        {
+            return lookup.GetValues(key, ConvertValue<T>);
+        }
+
+        /// <summary>Gets the values from the collection.</summary>
+        /// <typeparam name="T">The type of the values to retrieve</typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="key">The key by which to get the values.</param>
+        /// <returns>A sequence of <typeparamref name="T"/> instances.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
+        public static IEnumerable<T> GetValues<T>(this NameValueCollection collection, string key)
+        {
+            return collection.ToLookup().GetValues<T>(key);
+        }
+
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
         /// <param name="dictionary">The dictionary.</param>
@@ -659,6 +681,18 @@
             return node.ToDictionary().GetValueOrDefault(key, defaultValue, converter);
         }
 
+        /// <summary>Gets the values from the collection.</summary>
+        /// <typeparam name="T">The type of the values to retrieve</typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="key">The key by which to get the values.</param>
+        /// <param name="converter">A function to convert a value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A sequence of <typeparamref name="T"/> instances.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="collection"/> or <paramref name="converter"/> is <c>null</c></exception>
+        public static IEnumerable<T> GetValues<T>(this NameValueCollection collection, string key, Func<string, T> converter)
+        {
+            return collection.ToLookup().GetValues(key, converter);
+        }
+
         /// <summary>Gets the value from the dictionary.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
         /// <param name="dictionary">The dictionary.</param>
@@ -694,6 +728,21 @@
             Requires.NotNull("converter", converter);
 
             return dictionary.Contains(key) ? converter(dictionary[key]) : defaultValue;
+        }
+
+        /// <summary>Gets the values from the lookup.</summary>
+        /// <typeparam name="T">The type of the values to retrieve</typeparam>
+        /// <param name="lookup">The lookup.</param>
+        /// <param name="key">The key by which to get the values.</param>
+        /// <param name="converter">A function to convert a value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
+        /// <returns>A sequence of <typeparamref name="T"/> instances.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="lookup"/> or <paramref name="converter"/> is <c>null</c></exception>
+        public static IEnumerable<T> GetValues<T>(this ILookup<string, string> lookup, string key, Func<string, T> converter)
+        {
+            Requires.NotNull("lookup", lookup);
+            Requires.NotNull("converter", converter);
+
+            return lookup[key].Select(converter);
         }
 
         /// <summary>Converts the <paramref name="collection"/> to an <see cref="ILookup{TKey,TElement}"/>.</summary>
