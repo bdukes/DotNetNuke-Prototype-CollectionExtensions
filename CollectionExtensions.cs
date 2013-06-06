@@ -48,9 +48,9 @@
         /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
-        public static T Get<T>(this IDictionary dictionary, string key)
+        public static T GetValueOrDefault<T>(this IDictionary dictionary, string key)
         {
-            return dictionary.Get(key, default(T));
+            return dictionary.GetValueOrDefault(key, default(T));
         }
 
         /// <summary>Gets the value from the lookup, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -65,9 +65,9 @@
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this ILookup<string, string> lookup, string key)
+        public static T GetValueOrDefault<T>(this ILookup<string, string> lookup, string key)
         {
-            return lookup.ToDictionary(key).Get<T>(key);
+            return lookup.ToDictionary(key).GetValueOrDefault<T>(key);
         }
 
         /// <summary>Gets the value from the collection, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -82,9 +82,9 @@
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this NameValueCollection collection, string key)
+        public static T GetValueOrDefault<T>(this NameValueCollection collection, string key)
         {
-            return collection.ToLookup().Get<T>(key);
+            return collection.ToLookup().GetValueOrDefault<T>(key);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -98,9 +98,9 @@
         /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XContainer node, string key)
+        public static T GetValueOrDefault<T>(this XContainer node, string key)
         {
-            return node.ToDictionary().Get<T>(key);
+            return node.ToDictionary().GetValueOrDefault<T>(key);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -114,9 +114,9 @@
         /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this IXPathNavigable node, string key)
+        public static T GetValueOrDefault<T>(this IXPathNavigable node, string key)
         {
-            return node.ToDictionary().Get<T>(key);
+            return node.ToDictionary().GetValueOrDefault<T>(key);
         }
 
         /// <summary>Gets the value from the dictionary, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -131,9 +131,9 @@
         /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
-        public static T Get<T>(this IDictionary dictionary, string key, T defaultValue)
+        public static T GetValueOrDefault<T>(this IDictionary dictionary, string key, T defaultValue)
         {
-            return dictionary.Get(key, defaultValue, ConvertValue<T>);
+            return dictionary.GetValueOrDefault(key, defaultValue, ConvertValue<T>);
         }
 
         /// <summary>Gets the value from the lookup, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -149,9 +149,9 @@
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this ILookup<string, string> lookup, string key, T defaultValue)
+        public static T GetValueOrDefault<T>(this ILookup<string, string> lookup, string key, T defaultValue)
         {
-            return lookup.ToDictionary(key).Get(key, defaultValue);
+            return lookup.ToDictionary(key).GetValueOrDefault(key, defaultValue);
         }
 
         /// <summary>Gets the value from the collection, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -167,9 +167,9 @@
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this NameValueCollection collection, string key, T defaultValue)
+        public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, T defaultValue)
         {
-            return collection.ToLookup().Get(key, defaultValue);
+            return collection.ToLookup().GetValueOrDefault(key, defaultValue);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/>  if the value doesn't exist.</summary>
@@ -184,9 +184,9 @@
         /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XContainer node, string key, T defaultValue)
+        public static T GetValueOrDefault<T>(this XContainer node, string key, T defaultValue)
         {
-            return node.ToDictionary().Get(key, defaultValue);
+            return node.ToDictionary().GetValueOrDefault(key, defaultValue);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/>  if the value doesn't exist.</summary>
@@ -201,9 +201,9 @@
         /// no cast is defined from the value to <typeparamref name="T"/>
         /// </exception>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this IXPathNavigable node, string key, T defaultValue)
+        public static T GetValueOrDefault<T>(this IXPathNavigable node, string key, T defaultValue)
         {
-            return node.ToDictionary().Get(key, defaultValue);
+            return node.ToDictionary().GetValueOrDefault(key, defaultValue);
         }
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -213,9 +213,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
-        public static T Get<T>(this IDictionary dictionary, string key, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this IDictionary dictionary, string key, Func<object, T> converter)
         {
-            return dictionary.Get(key, default(T), converter);
+            return dictionary.GetValueOrDefault(key, default(T), converter);
         }
 
         /// <summary>Gets the value from the lookup, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -226,9 +226,9 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this ILookup<string, string> lookup, string key, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this ILookup<string, string> lookup, string key, Func<object, T> converter)
         {
-            return lookup.ToDictionary(key).Get(key, converter);
+            return lookup.ToDictionary(key).GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the collection, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -239,9 +239,9 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this NameValueCollection collection, string key, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, Func<object, T> converter)
         {
-            return collection.ToLookup().Get(key, converter);
+            return collection.ToLookup().GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -251,9 +251,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XContainer node, string key, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this XContainer node, string key, Func<object, T> converter)
         {
-            return node.ToDictionary().Get(key, converter);
+            return node.ToDictionary().GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -263,9 +263,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this IXPathNavigable node, string key, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this IXPathNavigable node, string key, Func<object, T> converter)
         {
-            return node.ToDictionary().Get(key, converter);
+            return node.ToDictionary().GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -275,9 +275,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
-        public static T Get<T>(this IDictionary dictionary, string key, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this IDictionary dictionary, string key, Func<string, T> converter)
         {
-            return dictionary.Get(key, default(T), (object value) => ConvertValue(value, converter));
+            return dictionary.GetValueOrDefault(key, default(T), (object value) => ConvertValue(value, converter));
         }
 
         /// <summary>Gets the value from the lookup, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -288,9 +288,9 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this ILookup<string, string> lookup, string key, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this ILookup<string, string> lookup, string key, Func<string, T> converter)
         {
-            return lookup.ToDictionary(key).Get(key, converter);
+            return lookup.ToDictionary(key).GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the collection, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -301,9 +301,9 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this NameValueCollection collection, string key, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, Func<string, T> converter)
         {
-            return collection.ToLookup().Get(key, converter);
+            return collection.ToLookup().GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -313,9 +313,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XContainer node, string key, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this XContainer node, string key, Func<string, T> converter)
         {
-            return node.ToDictionary().Get(key, converter);
+            return node.ToDictionary().GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
@@ -325,9 +325,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this IXPathNavigable node, string key, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this IXPathNavigable node, string key, Func<string, T> converter)
         {
-            return node.ToDictionary().Get(key, converter);
+            return node.ToDictionary().GetValueOrDefault(key, converter);
         }
 
         /// <summary>Gets the value from the dictionary, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -338,9 +338,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is <c>null</c></exception>
-        public static T Get<T>(this IDictionary dictionary, string key, T defaultValue, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this IDictionary dictionary, string key, T defaultValue, Func<string, T> converter)
         {
-            return dictionary.Get(key, defaultValue, (object value) => ConvertValue(value, converter));
+            return dictionary.GetValueOrDefault(key, defaultValue, (object value) => ConvertValue(value, converter));
         }
 
         /// <summary>Gets the value from the lookup, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -352,9 +352,9 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this ILookup<string, string> lookup, string key, T defaultValue, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this ILookup<string, string> lookup, string key, T defaultValue, Func<string, T> converter)
         {
-            return lookup.ToDictionary(key).Get(key, defaultValue, converter);
+            return lookup.ToDictionary(key).GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the collection, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -366,9 +366,9 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this NameValueCollection collection, string key, T defaultValue, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, T defaultValue, Func<string, T> converter)
         {
-            return collection.ToLookup().Get(key, defaultValue, converter);
+            return collection.ToLookup().GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -379,9 +379,9 @@
         /// <param name="converter">A function to convert the value as a <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XContainer node, string key, T defaultValue, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this XContainer node, string key, T defaultValue, Func<string, T> converter)
         {
-            return node.ToDictionary().Get(key, defaultValue, converter);
+            return node.ToDictionary().GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -392,9 +392,9 @@
         /// <param name="converter">A function to convert the value as a <see cref="string"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this IXPathNavigable node, string key, T defaultValue, Func<string, T> converter)
+        public static T GetValueOrDefault<T>(this IXPathNavigable node, string key, T defaultValue, Func<string, T> converter)
         {
-            return node.ToDictionary().Get(key, defaultValue, converter);
+            return node.ToDictionary().GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the lookup, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -406,9 +406,9 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="lookup"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="lookup"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this ILookup<string, string> lookup, string key, T defaultValue, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this ILookup<string, string> lookup, string key, T defaultValue, Func<object, T> converter)
         {
-            return lookup.ToDictionary(key).Get(key, defaultValue, converter);
+            return lookup.ToDictionary(key).GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the collection, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -420,9 +420,9 @@
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection"/> is <c>null</c></exception>
         /// <exception cref="InvalidOperationException"><paramref name="collection"/> has multiple values for the given <paramref name="key"/></exception>
-        public static T Get<T>(this NameValueCollection collection, string key, T defaultValue, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this NameValueCollection collection, string key, T defaultValue, Func<object, T> converter)
         {
-            return collection.ToLookup().Get(key, defaultValue, converter);
+            return collection.ToLookup().GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -433,9 +433,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this XContainer node, string key, T defaultValue, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this XContainer node, string key, T defaultValue, Func<object, T> converter)
         {
-            return node.ToDictionary().Get(key, defaultValue, converter);
+            return node.ToDictionary().GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the XML node's child elements, returning <paramref name="defaultValue"/> if the value doesn't exist.</summary>
@@ -446,9 +446,9 @@
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="node"/> is <c>null</c></exception>
-        public static T Get<T>(this IXPathNavigable node, string key, T defaultValue, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this IXPathNavigable node, string key, T defaultValue, Func<object, T> converter)
         {
-            return node.ToDictionary().Get(key, defaultValue, converter);
+            return node.ToDictionary().GetValueOrDefault(key, defaultValue, converter);
         }
 
         /// <summary>Gets the value from the dictionary, returning the <paramref key="defaultValue"/> if the value doesn't exist.</summary>
@@ -459,7 +459,7 @@
         /// <param name="converter">A function to convert the value as an <see cref="object"/> to a <typeparamref name="T"/> instance.</param>
         /// <returns>A <typeparamref name="T"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> or <paramref name="converter"/> is <c>null</c></exception>
-        public static T Get<T>(this IDictionary dictionary, string key, T defaultValue, Func<object, T> converter)
+        public static T GetValueOrDefault<T>(this IDictionary dictionary, string key, T defaultValue, Func<object, T> converter)
         {
             Requires.NotNull("dictionary", dictionary);
             Requires.NotNull("converter", converter);

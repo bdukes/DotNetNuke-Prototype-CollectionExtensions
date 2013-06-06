@@ -19,7 +19,7 @@
         {
             var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.Get<string>("cat id");
+            var value = table.GetValueOrDefault<string>("cat id");
 
             Expect(value, Is.Null);
         }
@@ -29,7 +29,7 @@
         {
             var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.Get<string>("app id");
+            var value = table.GetValueOrDefault<string>("app id");
 
             Expect(value, Is.EqualTo("abc123"));
         }
@@ -39,7 +39,7 @@
         {
             var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.Get("app id", "abracadabra");
+            var value = table.GetValueOrDefault("app id", "abracadabra");
 
             Expect(value, Is.EqualTo("abc123"));
         }
@@ -49,7 +49,7 @@
         {
             var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.Get("cat id", "Frank");
+            var value = table.GetValueOrDefault("cat id", "Frank");
 
             Expect(value, Is.EqualTo("Frank"));
         }
@@ -59,7 +59,7 @@
         {
             var table = new Hashtable { { "app id", "true" } };
 
-            var value = table.Get<bool>("app id");
+            var value = table.GetValueOrDefault<bool>("app id");
 
             Expect(value, Is.True);
         }
@@ -69,7 +69,7 @@
         {
             var table = new Hashtable { { "app id", "true" } };
 
-            var value = table.Get("app id", false);
+            var value = table.GetValueOrDefault("app id", false);
 
             Expect(value, Is.True);
         }
@@ -80,7 +80,7 @@
             var value = true;
             var table = new Hashtable { { "app id", "abc123" } };
 
-            value = table.Get("Allow Windows Live Writer", value);
+            value = table.GetValueOrDefault("Allow Windows Live Writer", value);
 
             Expect(value, Is.True);
         }
@@ -90,7 +90,7 @@
         {
             var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.Get<bool>("Allow Windows Live Writer");
+            var value = table.GetValueOrDefault<bool>("Allow Windows Live Writer");
 
             Expect(value, Is.False);
         }
@@ -100,7 +100,7 @@
         {
             var table = new Hashtable { { "allow", "on" } };
 
-            var value = table.Get(
+            var value = table.GetValueOrDefault(
                 "allow", 
                 v =>
                 {
@@ -121,7 +121,7 @@
         {
             var collection = new Dictionary<string, string> { { "appId", "123" } };
 
-            var value = collection.Get<int>("appId");
+            var value = collection.GetValueOrDefault<int>("appId");
 
             Expect(value, Is.EqualTo(123));
         }
@@ -131,7 +131,7 @@
         {
             var collection = new Dictionary<string, string> { { "appId", "1.23" } };
 
-            var value = collection.Get<decimal>("appId");
+            var value = collection.GetValueOrDefault<decimal>("appId");
 
             Expect(value, Is.EqualTo(1.23m));
         }
@@ -142,7 +142,7 @@
         {
             var collection = new Dictionary<string, string> { { "appId", "1.23" } };
 
-            var value = collection.Get<decimal>("appId");
+            var value = collection.GetValueOrDefault<decimal>("appId");
 
             Expect(value, Is.EqualTo(1.23m));
         }
@@ -152,7 +152,7 @@
         {
             var collection = new Dictionary<string, string> { { "startDate", "05/04/2012 00:00:00" } };
 
-            var value = collection.Get<DateTime>("startDate");
+            var value = collection.GetValueOrDefault<DateTime>("startDate");
 
             Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
         }
@@ -163,7 +163,7 @@
         {
             var collection = new Dictionary<string, string> { { "startDate", "05/04/2012 00:00:00" } };
 
-            var value = collection.Get<DateTime>("startDate");
+            var value = collection.GetValueOrDefault<DateTime>("startDate");
 
             Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
         }
@@ -173,7 +173,7 @@
         {
             var collection = new StateBag { { "appId", "123" } };
 
-            var value = collection.Get<string>("appId");
+            var value = collection.GetValueOrDefault<string>("appId");
 
             Expect(value, Is.EqualTo("123"));
         }
@@ -185,7 +185,7 @@
                 "parent",
                 new XElement("id", 14));
             
-            var value = node.Get<int>("id");
+            var value = node.GetValueOrDefault<int>("id");
 
             Expect(value, Is.EqualTo(14));
         }
@@ -199,7 +199,7 @@
     <id>13</id>
 </parent>");
 
-            var value = doc.DocumentElement.Get<int>("id");
+            var value = doc.DocumentElement.GetValueOrDefault<int>("id");
 
             Expect(value, Is.EqualTo(13));
         }
@@ -209,7 +209,7 @@
         {
             var collection = new Hashtable { { "length", "1:10:10" } };
 
-            var value = collection.Get("length", TimeSpan.Parse);
+            var value = collection.GetValueOrDefault("length", TimeSpan.Parse);
 
             Expect(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
         }
@@ -219,7 +219,7 @@
         {
             var collection = new NameValueCollection { { "text", "blah" } };
 
-            var value = collection.Get("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
+            var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
 
             Expect(value, Is.False);
         }
@@ -229,7 +229,7 @@
         {
             var collection = new NameValueCollection { { "radio", "on" } };
 
-            var value = collection.Get("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
+            var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
 
             Expect(value, Is.True);
         }
@@ -239,7 +239,7 @@
         {
             var collection = new NameValueCollection { { "question", "YES" } };
 
-            var value = collection.Get("question", CollectionExtensions.GetFlexibleBooleanParsingFunction("yes"));
+            var value = collection.GetValueOrDefault("question", CollectionExtensions.GetFlexibleBooleanParsingFunction("yes"));
 
             Expect(value, Is.True);
         }
@@ -269,7 +269,7 @@
         {
             var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
 
-            Expect(() => collection.Get<string>("state"), Throws.InvalidOperationException);
+            Expect(() => collection.GetValueOrDefault<string>("state"), Throws.InvalidOperationException);
         }
 
         [Test]
@@ -277,7 +277,7 @@
         {
             IDictionary dictionary = null;
 
-            Expect(() => dictionary.Get<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("dictionary"));
+            Expect(() => dictionary.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("dictionary"));
         }
 
         [Test]
@@ -285,7 +285,7 @@
         {
             XElement node = null;
 
-            Expect(() => node.Get<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+            Expect(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
         }
 
         [Test]
@@ -293,7 +293,7 @@
         {
             XmlNode node = null;
 
-            Expect(() => node.Get<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+            Expect(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
         }
 
         [Test]
@@ -301,7 +301,7 @@
         {
             var dictionary = new Dictionary<string, string> { { "length", "1:10:10" } };
 
-            Expect(() => dictionary.Get<TimeSpan>("length"), Throws.TypeOf<InvalidCastException>());
+            Expect(() => dictionary.GetValueOrDefault<TimeSpan>("length"), Throws.TypeOf<InvalidCastException>());
         }
 
         [Test]
@@ -309,7 +309,7 @@
         {
             var dictionary = new Dictionary<string, string> { { "length", null } };
 
-            Expect(() => dictionary.Get<int>("length"), Throws.TypeOf<InvalidCastException>());
+            Expect(() => dictionary.GetValueOrDefault<int>("length"), Throws.TypeOf<InvalidCastException>());
         }
 
         [Test]
@@ -317,7 +317,7 @@
         {
             var dictionary = new Dictionary<string, string> { { "length", null } };
 
-            var value = dictionary.Get<ApplicationException>("length");
+            var value = dictionary.GetValueOrDefault<ApplicationException>("length");
 
             Expect(value, Is.Null);
         }
@@ -327,7 +327,7 @@
         {
             var dictionary = new Dictionary<string, string> { { "ID", "abc123" } };
 
-            Expect(() => dictionary.Get<int>("ID"), Throws.TypeOf<FormatException>());
+            Expect(() => dictionary.GetValueOrDefault<int>("ID"), Throws.TypeOf<FormatException>());
         }
 
         [Test]
